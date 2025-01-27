@@ -72,6 +72,15 @@ app.listen(8080,()=>{
 });
 
 
+app.use((req,res,next)=>{
+  res.locals.success=req.flash("success");
+  res.locals.error=req.flash("error");
+  res.locals.currentuser=req.user;
+  console.log('res.locals:', res.locals);
+  next();
+})
+
+
 
 
 app.use(passport.initialize());
@@ -79,31 +88,16 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
 
-app.use((req,res,next)=>{
-  res.locals.success=req.flash("success");
-  res.locals.error=req.flash("error");
-  res.locals.currentUser=req.user;
-  next();
-})
-
-
-
-// app.get("/demoUser",async(req,res)=>{
-// const demoUser=new User({
-//   email:"urvashi@gmail.com",
-// username:"Urvashi123",
-// })
-// let registeredUser=await User.register(demoUser,"itsme");
-// res.send(registeredUser);
-// });
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use("/listings",listingRouter)
 app.use("/listings/:id/reviews",reviewRouter)
 app.use("/",userRouter)
 
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+
+
 
 app.all("*",(req,res,next)=>{
   next(new ExpressError(404,"Page not Found"))
