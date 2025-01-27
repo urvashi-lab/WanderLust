@@ -1,4 +1,7 @@
-require('dotenv').config();
+if(process.env.NODE_ENV != "production"){
+  require('dotenv').config();
+}
+
 
 const MongoStore=require('connect-mongo')
 const express=require("express");
@@ -17,7 +20,7 @@ const flash=require("connect-flash");
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User=require("./models/user.js");
-
+const dburl=process.env.ATLASDB_URL;
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.set("view engine","ejs");
@@ -28,7 +31,7 @@ app.use(express.static(path.join(__dirname,"/public")))
 const store=MongoStore.create({
   mongoUrl:dbUrl,
   crypto:{
-    secret:"mysupersecretcode"
+    secret:process.env.SECRET
   },
   touchAfter:24*3600
 }
@@ -40,14 +43,14 @@ store.on("error",()=>{
 
 const sessionOptions={
   store,
-  secret:"mysupersecretstring",
+  secret:process.env.SECRET,
    resave:false,
    saveUninitialized:true,
 }
 
 
 app.use(session(sessionOptions));
-const dburl=process.env.ATLASDB_URL;
+
 
 app.use(flash());
 
