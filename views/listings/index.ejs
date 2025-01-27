@@ -1,0 +1,226 @@
+<% layout('/layouts/boilerplate') %>
+
+<style>
+.filters{
+  margin-top:2rem;
+  display:flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter{
+  margin-right: 3rem;
+  opacity:0.7;
+  text-align: center;
+  font-size: 0.8rem;
+}
+.filter i{
+  font-size: 2rem;
+}
+.filter:hover{
+opacity:1;
+}
+
+.filter i{
+  color: black;
+}
+
+.filter a{
+  text-decoration: none;
+  color: black;
+  font-size: 0.8rem;
+}
+
+.tax-info{
+  display:none;
+}
+
+.tax-toggle{
+  border:1px solid black;
+  border-radius: 1rem;
+  height:3.5rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+
+}
+</style>
+
+
+ 
+<div class="filters">
+      
+      <div class="filter" data-category="Amazing pools">
+        <a href="/listings/category">
+        <div name="category" ><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing pools</p>
+      </a>
+      </div>
+    
+      <div class="filter" data-category="Greenary">
+        <a href="/listings/category">
+        <div name="category"><i class="fa-solid fa-tree"></i></div>
+        <p>Greenary</p>
+      </a>
+      </div>
+
+      <div class="filter" data-category="Beaches">
+        <a href="/listings/category">
+        <div name="category"><i class="fa-solid  fa-umbrella-beach"></i></div>
+        <p>Beaches</p>
+      </a>
+      </div>
+
+      <div class="filter" data-category="Forests">
+        <a href="/listings/category">
+        <div name="category"><i class="fa-solid  fa-seedling"></i></div>
+        <p>Forests</p>
+      </a>
+      </div>
+
+      <div class="filter" data-category="History">
+        <a href="/listings/category">
+        <div name="category"><i class="fa-solid fa-place-of-worship"></i></div>
+        <p>History</p>
+      </a>
+      </div>
+
+        <div class="filter" data-category="Top cities">
+          <a href="/listings/category">
+        <div name="category"><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Top cities</p>
+      </a>
+      </div>
+   
+
+      <div class="filter" data-category="Rooms">
+        <a href="/listings/category">
+        <div name="category"><i class="fa-solid fa-bed"></i></div>
+        <p>Rooms</p>
+      </a>
+      </div>
+   
+
+      <div class="filter" data-category="Mountains">
+        <a href="/listings/category">
+        <div name="category"><i class="fa-solid fa-mountain"></i></div>
+        <p>Mountains</p>
+      </a>
+      </div>
+    
+
+      <!-- <div class="filter">
+        <div><i class="fa-regular fa-chess-rook"></i></div>
+        <p>Castles</p>
+      </div> -->
+
+      <div class="filter" data-category="Camping">
+        <a href="/listings/category">
+        <div name="category"><i class="fa-solid fa-campground"></i></div>
+        <p>Camping</p>
+      </a>
+      </div>
+    
+
+      <div class="filter" data-category="Farms">
+        <a href="/listings/category">
+        <div name="category"><i class="fa-solid fa-tractor"></i></div>
+        <p>Farms</p>
+      </a>
+      </div>
+    
+
+      <div class="filter" data-category="Artic">
+        <a href="/listings/category">
+       <div name="category"><i class="fa-solid fa-snowflake"></i></div>
+        <p>Artic</p>
+      </a>
+      </div>
+   
+    
+
+    
+  <div class="filter" data-category="Lakefront">
+    <a href="/listings/category">
+   <div name="category"><i class="fa-solid fa-water"></i></div>
+    <p>Lakefront</p>
+  </div>
+</a>
+
+
+
+<div class="filter" data-category="Trending">
+  <a href="/listings/category">
+ <div name="category"><i class="fa-solid fa-fire"></i></div>
+  <p>Trending</p>
+</div>
+</a>
+
+<div class="tax-toggle">
+<div class="form-check-reverse form-switch">
+  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitch">
+  <label class="form-check-label" for="flexSwitch">Display total after taxes</label>
+</div>
+</div>
+
+
+</div>
+
+    <br/>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+      <% if (allListings.length === 0) { %>
+        <p>No listings available.</p>
+      <% } else { %>
+        <% for (listing of allListings) { %>
+          <a href="/listings/<%= listing._id %>" class="listing-link">
+            <div class="card listing-card">
+              <!-- Handle missing image gracefully -->
+              <img src="<%= listing.image ? listing.image.url : '/path/to/default-image.jpg' %>" 
+                   class="card-img-top" 
+                   alt="listing_image" 
+                   style="height: 20rem;">
+              <div class="card-img-overlay"></div>
+              <div class="card-body">
+                <p class="card-text">
+                  <b><%= listing.title || "No Title Available" %></b>
+                  <br/>
+                  &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %>/night
+                  <i class="tax-info">&nbsp;+18% GST</i><br/>
+                </p>
+                </div>
+          </div>
+          </a>
+        <% } %>
+      <% } %>
+    </div>
+   
+   
+    <script>
+   
+   
+    console.log("DOM fully loaded and parsed");
+    let taxSwitch = document.getElementById("flexSwitch");
+
+        taxSwitch.addEventListener("change", () => {
+            let taxinfo=document.getElementsByClassName("tax-info")
+            for(info of taxinfo){
+              if(info.style.display!="inline"){
+                info.style.display="inline"
+              }
+              else{
+                info.style.display="none";
+              }
+            }
+        });
+   
+
+    </script>
+ <script>
+  document.querySelectorAll('.filter').forEach(filter => {
+    filter.addEventListener('click', function () {
+      event.preventDefault(); 
+      const category = this.getAttribute('data-category'); // Get the category from the attribute
+      window.location.href = `/listings/category?category=${encodeURIComponent(category)}`; // Redirect with query
+    });
+  });
+</script>

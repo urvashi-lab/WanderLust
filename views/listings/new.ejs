@@ -1,0 +1,108 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <br/>
+            <h1>Create a New Listing</h1>
+            <form method="POST" action="/listings" class="needs-validation" 
+            novalidate
+            enctype="multipart/form-data"
+            id="listingForm" onsubmit="return createListing(event)">
+                <!-- Title -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input name="listing[title]" id="title" placeholder="Add a catchy title" class="form-control" type="text" required />
+                    <div class="invalid-feedback">Please provide a title.</div>
+                    <div class="valid-feedback">
+                        Title Looks Good
+                      </div>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="listing[description]" id="description" placeholder="Enter Description" class="form-control" required ></textarea>
+                    <div class="invalid-feedback">Please provide a description.</div>
+                </div>
+
+                <!-- Image -->
+                
+              
+                <div class="dropdown mb-3">
+                    <button 
+                      class="btn btn-secondary dropdown-toggle" 
+                      type="button" 
+                      id="dropdownInputButton" 
+                      data-bs-toggle="dropdown" 
+                      aria-expanded="false">
+                      Select Category
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownInputButton">
+                      <li class="dropdown-item" data-value="Amazing Pools">Amazing Pools</li>
+                      <li class="dropdown-item" data-value="Top Cities">Top Cities</li>
+                      <li class="dropdown-item" data-value="Rooms">Rooms</li>
+                      <li class="dropdown-item" data-value="Mountains">Mountains</li>
+                      <li class="dropdown-item" data-value="Camping">Camping</li>
+                      <li class="dropdown-item" data-value="Farms">Farms</li>
+                      <li class="dropdown-item" data-value="Arctic">Arctic</li>
+                      <li class="dropdown-item" data-value="Forests">Forests</li>
+                      <li class="dropdown-item" data-value="History">History</li>
+                      <li class="dropdown-item" data-value="Greenary">Greenary</li>
+                      <li class="dropdown-item" data-value="Beaches">Beaches</li>
+                      <li class="dropdown-item" data-value="Lakefront">Lakefront</li>
+                      
+                      <li class="dropdown-item" data-value="Trending">Trending</li>
+                     
+                    </ul>
+                    <!-- Hidden input with name parameter for form submission -->
+                    <input type="hidden" name="listing[category]" id="dropdownInput">
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label for="image" class="form-label">Upload Image</label>
+                    <input name="listing[image][url]" id="image" class="form-control" type="file" required />
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input name="listing[location]" id="location" placeholder="Enter Location" class="form-control" type="text" required />
+                    <div class="invalid-feedback">Please provide correct location.</div>
+                </div>
+
+
+                <!-- Price and Country -->
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label">Price</label>
+                        <input name="listing[price]" id="price" placeholder="Enter Price" class="form-control" type="number" required />
+                        <div class="invalid-feedback">Please provide a price.</div>
+                    </div>
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form-label">Country</label>
+                        <input name="listing[country]" id="country" placeholder="Enter Country" class="form-control" type="text" required />
+                        <div class="invalid-feedback">Please provide a country.</div>
+                    </div>
+                </div>
+                <br />
+                <button class="btn btn-dark add-btn" type="submit">Add</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Dropdown selection logic
+const dropdownItems = document.querySelectorAll('.dropdown-item');
+const dropdownButton = document.querySelector('#dropdownInputButton');
+const hiddenInput = document.querySelector('#dropdownInput');
+
+dropdownItems.forEach(item => {
+item.addEventListener('click', function () {
+const selectedValue = this.getAttribute('data-value'); // Get the value from data-value
+dropdownButton.textContent = selectedValue; // Update button text with selected value
+hiddenInput.value = selectedValue; // Update hidden input value for form submission
+});
+});
+</script>
+</body>
+    
