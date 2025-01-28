@@ -17,7 +17,7 @@
                     <div class="card-text"><%= showlisting.location %></div>
                     <div class="card-text"><%= showlisting.country %></div>
                 </div>
-          <%if (currentUser && showlisting.owner._id.equals(currentUser._id)) {%>
+          <%if (currentuser && showlisting.owner._id.equals(currentuser._id)) {%>
             <div class="btns ">
                 <form action="/listings/<%= showlisting._id %>/edit">
                     <button class="btn btn-dark add-btn">Edit</button>
@@ -37,7 +37,7 @@
     
 <hr/>
     <div class="col-8 offset-3 mb-3">
-        <%if (currentUser) {%>    
+        <%if (currentuser) {%>    
         <h4>Leave a Review</h4>
         <form class="mb-3 needs-validation" action="/listings/<%= showlisting._id%>/reviews" method="POST" novalidate>
             <label for="rating" class="form-label">Rating</label>
@@ -129,7 +129,6 @@
         return confirm("Are you sure you want to delete this listing?This action cannot be undone.")
     }
     function confirmDeleteReview(){
-        console.log("Working")
         return confirm("Are you sure you want to delete this Review?This action cannot be undone.")
     }
 </script>
