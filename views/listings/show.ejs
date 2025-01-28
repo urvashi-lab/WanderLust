@@ -17,7 +17,7 @@
                     <div class="card-text"><%= showlisting.location %></div>
                     <div class="card-text"><%= showlisting.country %></div>
                 </div>
-          <%if (currentuser && showlisting.owner._id.equals(currentuser._id)) {%>
+          <%if (currentUser && showlisting.owner._id.equals(currentUser._id)) {%>
             <div class="btns ">
                 <form action="/listings/<%= showlisting._id %>/edit">
                     <button class="btn btn-dark add-btn">Edit</button>
@@ -37,7 +37,7 @@
     
 <hr/>
     <div class="col-8 offset-3 mb-3">
-        <%if (currentuser) {%>    
+        <%if (currentUser) {%>    
         <h4>Leave a Review</h4>
         <form class="mb-3 needs-validation" action="/listings/<%= showlisting._id%>/reviews" method="POST" novalidate>
             <label for="rating" class="form-label">Rating</label>
@@ -80,10 +80,11 @@
                   </p>
                 <p class="card-text"><%= review.comment %></p>
                 
-                
+                <%if (currentUser && review.author._id.equals(currentUser._id)) {%>
                 <form method="POST" action="/listings/<%= showlisting._id%>/reviews/<%= review._id%>?_method=DELETE" class="mt-auto" onsubmit="return confirmDeleteReview()">
                     <button class="btn btn-dark btn-sm delete-btn mb-2">Delete</button>
                 </form>
+                <%}%>
             </div>
             
         </div>
