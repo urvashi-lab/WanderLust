@@ -1,6 +1,6 @@
-if(process.env.NODE_ENV != "production"){
+// if(process.env.NODE_ENV != "production"){
   require('dotenv').config();
-}
+// }
 
 
 const MongoStore=require('connect-mongo')
@@ -72,24 +72,24 @@ app.listen(8080,()=>{
 });
 
 
-app.use((req,res,next)=>{
-  res.locals.success=req.flash("success");
-  res.locals.error=req.flash("error");
-  res.locals.currentuser=req.user;
-  console.log('res.locals:', res.locals);
-  next();
-})
-
-
-
 
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
 
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use((req,res,next)=>{
+  res.locals.success=req.flash("success");
+  res.locals.error=req.flash("error");
+  res.locals.currentuser=req.user;
+  next();
+})
+
+
 
 app.use("/listings",listingRouter)
 app.use("/listings/:id/reviews",reviewRouter)
