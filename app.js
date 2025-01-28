@@ -66,8 +66,8 @@ async function main() {
 
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
-
-app.listen(8080,()=>{
+const PORT = process.env.PORT || 8080;
+app.listen(PORT,()=>{
     console.log("server is listening on port 8080");
 });
 
