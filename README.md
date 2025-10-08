@@ -4,9 +4,11 @@
 
 ---
 
+
 ## 📌 About the Project
 
 This project follows the **MVC (Model-View-Controller)** architecture, ensuring clean separation of concerns. The **Model** handles the database, the **View** manages the UI with EJS templates, and the **Controller** deals with the logic. This structure made it easy to scale features and keep the code organized.
+Here's the official link do check it out:https://wanderlust-7q96.onrender.com/
 
 ---
 
