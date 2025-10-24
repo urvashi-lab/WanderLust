@@ -147,48 +147,71 @@ module.exports.renderNewForm=(req,res)=>{
 
 
 
-       module.exports.editListing = async (req, res) => {
+      module.exports.editListing = async (req, res, next) => {
+      try {
         let { id } = req.params;
+        
+        // Fetch the existing listing
         let listing = await Listing.findById(id);
-      
+        
+        if (!listing) {
+          req.flash("error", "Listing not found!");
+          return res.redirect("/listings");
+        }
+
         // Check if the location has changed
         if (listing.location !== req.body.listing.location) {
           const { location } = req.body.listing;
-      
-          // Fetch coordinates from Nominatim API if the location has changed
+
+          // Fetch coordinates from Nominatim API
           const geocodeResponse = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`,
+            {
+              headers: {
+                'User-Agent': 'WanderLust/1.0 (your-email@example.com)'
+              }
+            }
           );
+
+          // Validate response
+          if (!geocodeResponse.ok) {
+            console.error(`Geocode API error: ${geocodeResponse.status}`);
+            req.flash("error", "Failed to geocode location. Please try again.");
+            return res.redirect(`/listings/${id}/edit`);
+          }
+
           const geocodeData = await geocodeResponse.json();
-      
+
           if (geocodeData.length > 0) {
             const lat = parseFloat(geocodeData[0].lat);
             const lon = parseFloat(geocodeData[0].lon);
-      
-            // Update the coordinates if location changed
             listing.coordinates = { lat, lon };
           } else {
             req.flash("error", "Location not found!");
             return res.redirect(`/listings/${id}/edit`);
           }
         }
-      
+
         // Update the listing details
         listing = Object.assign(listing, req.body.listing);
-      
+
         // Handle the image upload if available
         if (typeof req.file !== "undefined") {
           let url = req.file.path;
           let filename = req.file.filename;
           listing.image = { url, filename };
         }
-      
+
         // Save the updated listing
         await listing.save();
         req.flash("success", "Listing Updated!");
         res.redirect(`/listings/${id}`);
-      };
-      
+
+      } catch (error) {
+        console.error("Error in editListing:", error.message);
+        next(error);
+      }
+    };
     
 
 
